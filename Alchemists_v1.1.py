@@ -1,147 +1,133 @@
 
 import itertools
 
-Ingredients = ["Mushroom","Sprout","Toad","Talon","Orchid","Root","Scorpion","Feather"]
-#Alchemicals formatted as Red, Green, Blue
-Alchemicals = [[-1, 1, -1],[1, -1, 1],[1, -1, -1],[-1, 1, 1],[-1, -1, 1],[1, 1, -1],[-1, -1, -1],[1, 1, 1]]
+ingredients = ["Mushroom","Sprout","Toad","Talon","Orchid","Root","Scorpion","Feather"]
+#alchemicals formatted as Red, Green, Blue
+alchemicals = [[-1, 1, -1],[1, -1, 1],[1, -1, -1],[-1, 1, 1],[-1, -1, 1],[1, 1, -1],[-1, -1, -1],[1, 1, 1]]
 
+# Prompt the user for input on the type of information
+def promptForFact(facts):
+    getType = input("Enter type of information: Mix Potion (1), Sell Potion (2), Debunk (3), or Periscope (4).")
+    if getType == "Mix Potion" or getType == "1" :
+        getMixPotionInput(facts)
+    if getType == "Sell Potion" or getType == "2" :
+        getSellPotionInput(facts)
+    if getType == "Debunk" or getType == "3":
+        getDebunkInput(facts)
 
-# ------ would love a one sentence description above each function definition
-# ------ explaining what the function is doing !
-def PromptForFact(Facts):
-    # ------ put each of these comments under their corresponding branch instead
-    # Mix Potion : Two Ingredients and one result value
-    # Sell Potion : Two Ingredients and one to three result values
-    # Debunk: One Ingredient and one result value
-    # Periscope: One Ingredient and one result value
-    
-    # ------ for user inputs its usually better to let them type in full string or a number
-    # ------ something like "Enter type of information: Mix Potion (1), Sell Potion (2), Debunk (3), or Periscope (4)"
-    GetType = input("Enter type of information: Mix Potion, Sell Potion, Debunk, or Periscope.")
-    if GetType == "Mix Potion" :
-        GetMixPotionInput(Facts)
-    if GetType == "Sell Potion" :
-        GetSellPotionInput(Facts)
-    if GetType == "Debunk" :
-        GetDebunkInput(Facts)
-    if GetType == "Periscope":
-        GetPeriscopeInput(Facts) # ------ this function is not defined?
+    # if getType == "Periscope" or "4":
+    #     getPeriscopeInput(facts) 
 
-def GetMixPotionInput(Facts):
-    # ------ these 4 lines are the exact same as the ones in GetSellPotionInput
-    # ------ worth considering how you can abstract these into its own lil helper function
-    Ingredient1 = input("Enter the first ingredient used:")
-    Ingredient2 = input("Enter the second ingredient used:")
-    # ------ line below should probably tell you what numbers correspond to each color
-    # ------ "Enter the potion as three numbers for Red (-1), Green (0), and Blue (1)" OR
-    # ------ users to input a letter instead ("R" "G" "B") and you map it to the correct # in code
-    PotionInput = input("Enter the potion as three numbers for Red, Green, and Blue (such as '-1 0 0')")
-    PotionSplit = PotionInput.split()
-    PotionToAdd = []
-    # ------ can be done inline, also done in below function, could abstract
-    for value in PotionSplit:
-        PotionToAdd.append(int(value))
-    Facts["Mix Potion"].append([Ingredient1,Ingredient2,PotionToAdd])
+# Get input for mixed potions. Add a Mixed Potion fact to fact with both ingredients and the potion as a list of three integers
+def getMixPotionInput(facts):
+    ingredient1 = input("Enter the first ingredient used:")
+    ingredient2 = input("Enter the second ingredient used:")
+    potionInput = input("Enter the potion as three numbers for Red, Green, and Blue (such as '-1 0 0')")
+    potionSplitInt = [int(v) for v in potionInput.split()]
+    facts["Mix Potion"].append([ingredient1,ingredient2,potionSplitInt])
 
-def GetSellPotionInput(Facts):
-    # ------ see comment in previous function
-    Ingredient1 = input("Enter the first ingredient used:")
-    Ingredient2 = input("Enter the second ingredient used:")
-    PotionInput = input("Enter the result as three numbers for Red, Green, and Blue (such as '-1 -1 -1')")
-    PotionSplit = PotionInput.split()
-    PotionSplitInt = []
-    # ------ can be done inline
-    for value in PotionSplit:
-        PotionSplitInt.append(int(value))
-    PotionsToAdd = []    
-    for index in range(len(PotionSplitInt)):
-        Potion =[0,0,0]
-        if PotionSplitInt[index] != 0:
-            Potion[index] = PotionSplitInt[index]
-            PotionsToAdd.append(Potion)
-    Facts["Sell Potion"].append([Ingredient1,Ingredient2,PotionsToAdd])
+def getSellPotionInput(facts):
+    ingredient1 = input("Enter the first ingredient used:")
+    ingredient2 = input("Enter the second ingredient used:")
+    potionInput = input("Enter the result as three numbers for Red, Green, and Blue (such as '-1 -1 -1')")
+    potionSplitInt = [int(v) for v in potionInput.split()]
+    potionsToAdd = []    
+    for index in range(len(potionSplitInt)):
+        potion =[0,0,0]
+        if potionSplitInt[index] != 0:
+            potion[index] = potionSplitInt[index]
+            potionsToAdd.append(potion)
+    facts["Sell Potion"].append([ingredient1,ingredient2,potionsToAdd])
 
-def GetDebunkInput(Facts):
-    Ingredient = input("Enter the ingredient that's been debunked:")
-    # ------ see prior comment
-    ComponentInput = input("Enter the true component's value as three numbers for Red, Green, and Blue (such as '0 1 0'):")
-    ComponentSplit = ComponentInput.split()
-    ComponentOutput = []
-    for component in ComponentSplit:
-        ComponentOutput.append(int(component))
-    Facts["Debunk"].append([Ingredient,ComponentOutput])
+def getDebunkInput(facts):
+    ingredient = input("Enter the ingredient that's been debunked:")
+    componentInput = input("Enter the true component's value as three numbers for Red, Green, and Blue (such as '0 1 0'):")
+    componentSplit = componentInput.split()
+    componentOutput = []
+    for component in componentSplit:
+        componentOutput.append(int(component))
+    facts["Debunk"].append([ingredient,componentOutput])
 
-def permutate(Ingredients,Alchemicals):
-    UniqueCombinations = []
-    IngredientPermutations = itertools.permutations(Ingredients,len(Alchemicals))
+def permutate(ingredients,alchemicals):
+    uniqueCombinations = []
+    ingredientPermutations = itertools.permutations(ingredients,len(alchemicals))
    
-    for perm in IngredientPermutations:
-        AssignmentSet = {}
+    for perm in ingredientPermutations:
+        assignmentSet = {}
         for i in range(len(perm)):
-            AssignmentSet[perm[i]] = Alchemicals [i]
-        UniqueCombinations.append(AssignmentSet)       
+            assignmentSet[perm[i]] = alchemicals [i]
+        uniqueCombinations.append(assignmentSet)       
     
-    return UniqueCombinations
+    return uniqueCombinations
 
-def FactCheckAssignments(AllAssignments,Facts):
-    # ------ function is very long
-    # ------ probably worth rbeaking up the internal for loops out into their own functions
-    # ------ eg: lines 93-105 would be its own function
-    PossibleAssignments = []
-    for AssignmentSet in AllAssignments:
+def factCheckAssignments(allAssignments,facts):
+    possibleAssignments = []
+    for assignmentSet in allAssignments:
         ExperimentTracker = []
-        for experiment in Facts["Mix Potion"]:
-            MixedIngredients = [experiment[0],experiment[1]]
-            FactualResult = experiment[2]
+        for experiment in facts["Mix Potion"]:
+            experimentBoolean = FactCheckMixPotion(assignmentSet,experiment)
+            ExperimentTracker.append(experimentBoolean)
 
-            AssignedAlchemicals = []
-            for ingredient in MixedIngredients: 
-                AssignedAlchemicals.append(AssignmentSet[ingredient])
-            AssignedResult = MixPotion(AssignedAlchemicals[0],AssignedAlchemicals[1])
+        for experiment in facts["Sell Potion"]:
+            experimentBoolean = FactCheckSellPotion(assignmentSet,experiment)
+            ExperimentTracker.append(experimentBoolean)
 
-            if AssignedResult == FactualResult:
-                ExperimentTracker.append(True)
-            else:
-                ExperimentTracker.append(False)
-        for experiment in Facts["Sell Potion"]:
-            MixedIngredients = [experiment[0],experiment[1]]
-
-            AssignedAlchemicals = []
-            for ingredient in MixedIngredients:
-                AssignedAlchemicals.append(AssignmentSet[ingredient])
-            AssignedResult = MixPotion(AssignedAlchemicals[0],AssignedAlchemicals[1])
-
-            SubExperimentTracker = []
-            for FactualResult in experiment[2]:
-                if AssignedResult == FactualResult:
-                    SubExperimentTracker.append(True)
-            if any(SubExperimentTracker):
-                ExperimentTracker.append(True)
-            else:
-                ExperimentTracker.append(False)
-
-        for debunking in Facts["Debunk"]:
-            Ingredient = debunking[0]
-            FactualComponent = debunking[1]
-            AssignedAlchemical = AssignmentSet[Ingredient]
-            for index in range(len(FactualComponent)):
-                if FactualComponent[index] != 0:
-                    if FactualComponent[index] == AssignedAlchemical[index] :
-                        ExperimentTracker.append(True)
-                    else:
-                        ExperimentTracker.append(False)
-        
-        # for periscoping in 
+        for debunking in facts["Debunk"]:
+            debunkingBoolean = FactCheckDebunk(assignmentSet,debunking)
+            ExperimentTracker.append(debunkingBoolean)
 
         if all(ExperimentTracker):
-            PossibleAssignments.append(AssignmentSet)
-    return PossibleAssignments
+            possibleAssignments.append(assignmentSet)
 
-def MixPotion(Alchemical1,Alchemical2):
+    return possibleAssignments
+
+def FactCheckMixPotion(assignmentSet,experiment):
+    MixedIngredients = [experiment[0],experiment[1]]
+    factualResult = experiment[2]
+
+    assignedAlchemicals = []
+    for ingredient in MixedIngredients: 
+        assignedAlchemicals.append(assignmentSet[ingredient])
+    assignedResult = MixPotion(assignedAlchemicals[0],assignedAlchemicals[1])
+
+    if assignedResult == factualResult:
+        return True
+    else:
+        return False
+
+def FactCheckSellPotion(assignmentSet,experiment):
+    MixedIngredients = [experiment[0],experiment[1]]
+
+    assignedAlchemicals = []
+    for ingredient in MixedIngredients:
+        assignedAlchemicals.append(assignmentSet[ingredient])
+    assignedResult = MixPotion(assignedAlchemicals[0],assignedAlchemicals[1])
+
+    SubExperimentTracker = []
+    for factualResult in experiment[2]:
+        if assignedResult == factualResult:
+            SubExperimentTracker.append(True)
+    if any(SubExperimentTracker):
+        return True
+    else:
+        return False
+
+def FactCheckDebunk(assignmentSet,debunking):
+    ingredient = debunking[0]
+    factualComponent = debunking[1]
+    assignedAlchemical = assignmentSet[ingredient]
+    for index in range(len(factualComponent)):
+        if factualComponent[index] != 0:
+            if factualComponent[index] == assignedAlchemical[index] :
+                return True
+            else:
+                return False
+
+def MixPotion(alchemical1,Alchemical2):
     Result = []
-    for i in range(len(Alchemical1)) :
-        if Alchemical1[i] == Alchemical2[i] :
-            Result.append(Alchemical1[i])
+    for i in range(len(alchemical1)) :
+        if alchemical1[i] == Alchemical2[i] :
+            Result.append(alchemical1[i])
         else: Result.append(0)
     # Neutral
     if Result == [0,0,0] :
@@ -156,56 +142,56 @@ def MixPotion(Alchemical1,Alchemical2):
         PrioritizedResult[PrioritizedIndex] = Result[PrioritizedIndex]
         return PrioritizedResult
 
-def AssignmentCounter(Ingredients,Alchemicals,PossibleAssignments):
-    AssignmentCount = CreateEmptyMap(Ingredients,Alchemicals)
-    for AssignmentSet in PossibleAssignments:
-        for Ingredient in AssignmentSet:
-            AssignedAlchemicalKey = str(AssignmentSet[Ingredient])
-            AssignmentCount[Ingredient][AssignedAlchemicalKey] += 1
-    return AssignmentCount
+def assignmentCounter(ingredients,alchemicals,possibleAssignments):
+    assignmentCount = createEmptyMap(ingredients,alchemicals)
+    for assignmentSet in possibleAssignments:
+        for ingredient in assignmentSet:
+            assignedAlchemicalKey = str(assignmentSet[ingredient])
+            assignmentCount[ingredient][assignedAlchemicalKey] += 1
+    return assignmentCount
 
-def CreateEmptyMap(Ingredients,Alchemicals):
-    AllIngredientMap = {}
-    for Ingredient in Ingredients:
-        SingleIngredientMap = {}
-        for Alchemical in Alchemicals:
-            SingleIngredientMap[str(Alchemical)] = 0
-        AllIngredientMap[Ingredient] = SingleIngredientMap
-    return AllIngredientMap
+def createEmptyMap(ingredients,alchemicals):
+    allIngredientMap = {}
+    for ingredient in ingredients:
+        singleIngredientMap = {}
+        for alchemical in alchemicals:
+            singleIngredientMap[str(alchemical)] = 0
+        allIngredientMap[ingredient] = singleIngredientMap
+    return allIngredientMap
 
-def AssignmentCountToProbability(AssignmentCount):
-    AssignmentProbabilities = AssignmentCount
-    for Ingredient in AssignmentProbabilities:
-        TotalCount = 0
-        for Alchemical in AssignmentProbabilities[Ingredient]:
-            TotalCount += AssignmentProbabilities[Ingredient][Alchemical]
-        for Alchemical in AssignmentProbabilities[Ingredient]:
-            AssignmentProbabilities[Ingredient][Alchemical] /= TotalCount
-    return AssignmentProbabilities
+def assignmentCountToProbability(assignmentCount):
+    assignmentProbabilities = assignmentCount.copy()
+    for ingredient in assignmentProbabilities:
+        totalCount = 0
+        for alchemical in assignmentProbabilities[ingredient]:
+            totalCount += assignmentProbabilities[ingredient][alchemical]
+        for alchemical in assignmentProbabilities[ingredient]:
+            assignmentProbabilities[ingredient][alchemical] /= totalCount
+    return assignmentProbabilities
 
-def PrintProbabilityMapping(Ingredients,Alchemicals,AssignmentProbabilities):
+def printProbabilityMapping(ingredients,alchemicals,assignmentProbabilities):
     print("\n      ")
-    TopLine = '               '
-    for Ingredient in Ingredients:
-        TopLine += str.ljust(Ingredient,15," ")
-    print(TopLine)
-    for Alchemical in Alchemicals:
-        Alchemical = str(Alchemical)
-        AlchemicalLine = str.ljust(Alchemical,15," ")
-        for Ingredient in Ingredients:
-            AlchemicalProbability = str(int(100*(AssignmentProbabilities[Ingredient][str(Alchemical)])))
-            AlchemicalLine += str.ljust(AlchemicalProbability,15," ")
-        print(AlchemicalLine)
+    topLine = '               '
+    for ingredient in ingredients:
+        topLine += str.ljust(ingredient,15," ")
+    print(topLine)
+    for alchemical in alchemicals:
+        alchemical = str(alchemical)
+        alchemicalLine = str.ljust(alchemical,15," ")
+        for ingredient in ingredients:
+            alchemicalProbability = str(int(100*(assignmentProbabilities[ingredient][str(alchemical)])))
+            alchemicalLine += str.ljust(alchemicalProbability,15," ")
+        print(alchemicalLine)
 
 def main():
-    Facts = {"Mix Potion":[],"Sell Potion":[],"Debunk":[],"Periscope":[]}
-    AllAssignments = permutate(Ingredients,Alchemicals)
+    facts = {"Mix Potion":[],"Sell Potion":[],"Debunk":[],"Periscope":[]}
+    allAssignments = permutate(ingredients,alchemicals)
     while True:
-        PromptForFact(Facts)
-        PossibleAssignments = FactCheckAssignments(AllAssignments,Facts)
-        AssignmentCount = AssignmentCounter(Ingredients,Alchemicals,PossibleAssignments)
-        AssignmentProbabilities = AssignmentCountToProbability(AssignmentCount)
-        PrintProbabilityMapping(Ingredients,Alchemicals,AssignmentProbabilities)
+        promptForFact(facts)
+        possibleAssignments = factCheckAssignments(allAssignments,facts)
+        assignmentCount = assignmentCounter(ingredients,alchemicals,possibleAssignments)
+        assignmentProbabilities = assignmentCountToProbability(assignmentCount)
+        printProbabilityMapping(ingredients,alchemicals,assignmentProbabilities)
 
 
 main()
