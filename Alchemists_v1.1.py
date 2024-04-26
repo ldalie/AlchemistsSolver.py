@@ -5,11 +5,18 @@ Ingredients = ["Mushroom","Sprout","Toad","Talon","Orchid","Root","Scorpion","Fe
 #Alchemicals formatted as Red, Green, Blue
 Alchemicals = [[-1, 1, -1],[1, -1, 1],[1, -1, -1],[-1, 1, 1],[-1, -1, 1],[1, 1, -1],[-1, -1, -1],[1, 1, 1]]
 
+
+# ------ would love a one sentence description above each function definition
+# ------ explaining what the function is doing !
 def PromptForFact(Facts):
+    # ------ put each of these comments under their corresponding branch instead
     # Mix Potion : Two Ingredients and one result value
     # Sell Potion : Two Ingredients and one to three result values
     # Debunk: One Ingredient and one result value
     # Periscope: One Ingredient and one result value
+    
+    # ------ for user inputs its usually better to let them type in full string or a number
+    # ------ something like "Enter type of information: Mix Potion (1), Sell Potion (2), Debunk (3), or Periscope (4)"
     GetType = input("Enter type of information: Mix Potion, Sell Potion, Debunk, or Periscope.")
     if GetType == "Mix Potion" :
         GetMixPotionInput(Facts)
@@ -18,24 +25,32 @@ def PromptForFact(Facts):
     if GetType == "Debunk" :
         GetDebunkInput(Facts)
     if GetType == "Periscope":
-        GetPeriscopeInput(Facts)
+        GetPeriscopeInput(Facts) # ------ this function is not defined?
 
 def GetMixPotionInput(Facts):
+    # ------ these 4 lines are the exact same as the ones in GetSellPotionInput
+    # ------ worth considering how you can abstract these into its own lil helper function
     Ingredient1 = input("Enter the first ingredient used:")
     Ingredient2 = input("Enter the second ingredient used:")
+    # ------ line below should probably tell you what numbers correspond to each color
+    # ------ "Enter the potion as three numbers for Red (-1), Green (0), and Blue (1)" OR
+    # ------ users to input a letter instead ("R" "G" "B") and you map it to the correct # in code
     PotionInput = input("Enter the potion as three numbers for Red, Green, and Blue (such as '-1 0 0')")
     PotionSplit = PotionInput.split()
     PotionToAdd = []
+    # ------ can be done inline, also done in below function, could abstract
     for value in PotionSplit:
         PotionToAdd.append(int(value))
     Facts["Mix Potion"].append([Ingredient1,Ingredient2,PotionToAdd])
 
 def GetSellPotionInput(Facts):
+    # ------ see comment in previous function
     Ingredient1 = input("Enter the first ingredient used:")
     Ingredient2 = input("Enter the second ingredient used:")
     PotionInput = input("Enter the result as three numbers for Red, Green, and Blue (such as '-1 -1 -1')")
     PotionSplit = PotionInput.split()
     PotionSplitInt = []
+    # ------ can be done inline
     for value in PotionSplit:
         PotionSplitInt.append(int(value))
     PotionsToAdd = []    
@@ -48,6 +63,7 @@ def GetSellPotionInput(Facts):
 
 def GetDebunkInput(Facts):
     Ingredient = input("Enter the ingredient that's been debunked:")
+    # ------ see prior comment
     ComponentInput = input("Enter the true component's value as three numbers for Red, Green, and Blue (such as '0 1 0'):")
     ComponentSplit = ComponentInput.split()
     ComponentOutput = []
@@ -68,7 +84,9 @@ def permutate(Ingredients,Alchemicals):
     return UniqueCombinations
 
 def FactCheckAssignments(AllAssignments,Facts):
-    # Mix Potion, Sell Potion, Debunk, Periscope
+    # ------ function is very long
+    # ------ probably worth rbeaking up the internal for loops out into their own functions
+    # ------ eg: lines 93-105 would be its own function
     PossibleAssignments = []
     for AssignmentSet in AllAssignments:
         ExperimentTracker = []
