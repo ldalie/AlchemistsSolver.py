@@ -37,6 +37,7 @@ def getSellPotionInput(facts):
         if potionSplitInt[index] != 0:
             potion[index] = potionSplitInt[index]
             potionsToAdd.append(potion)
+    # Add special case
     facts["Sell Potion"].append([ingredient1,ingredient2,potionsToAdd])
 
 def getDebunkInput(facts):
@@ -90,10 +91,7 @@ def FactCheckMixPotion(assignmentSet,experiment):
         assignedAlchemicals.append(assignmentSet[ingredient])
     assignedResult = MixPotion(assignedAlchemicals[0],assignedAlchemicals[1])
 
-    if assignedResult == factualResult:
-        return True
-    else:
-        return False
+    return (assignedResult == factualResult)
 
 def FactCheckSellPotion(assignmentSet,experiment):
     MixedIngredients = [experiment[0],experiment[1]]
@@ -137,10 +135,10 @@ def MixPotion(alchemical1,Alchemical2):
         return Result
     # Doublematch 
     else:
-        PrioritizedIndex = Result.index(0)-1
-        PrioritizedResult = [0,0,0]
-        PrioritizedResult[PrioritizedIndex] = Result[PrioritizedIndex]
-        return PrioritizedResult
+        prioritizedIndex = Result.index(0)-1
+        prioritizedResult = [0,0,0]
+        prioritizedResult[prioritizedIndex] = Result[prioritizedIndex]
+        return prioritizedResult
 
 def assignmentCounter(ingredients,alchemicals,possibleAssignments):
     assignmentCount = createEmptyMap(ingredients,alchemicals)
