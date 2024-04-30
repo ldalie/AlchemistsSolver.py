@@ -5,9 +5,33 @@ ingredients = ["Mushroom","Sprout","Toad","Talon","Orchid","Root","Scorpion","Fe
 #alchemicals formatted as Red, Green, Blue
 alchemicals = [[-1, 1, -1],[1, -1, 1],[1, -1, -1],[-1, 1, 1],[-1, -1, 1],[1, 1, -1],[-1, -1, -1],[1, 1, 1]]
 
+class Fact:
+    # Create instance with attributes containing a list of relevant alchemicals and a list of relevent ingredients
+    def __init__(self,factualAlchemicals,factualIngredients):
+        self.factualAlchemicals = factualAlchemicals
+        self.factualIngredients = factualIngredients
+
+class MixPotionFact(Fact):
+    def __str__(self):
+        return str(self.factualAlchemicals)
+
+    def FactCheck(self,assignmentSet):
+        MixedIngredients = [self.factualIngredients[0],self.factualIngredients[1]]
+        factualResult = self.factualAlchemicals[0]
+
+        assignedAlchemicals = []
+        for ingredient in MixedIngredients: 
+            assignedAlchemicals.append(assignmentSet[ingredient])
+        assignedResult = MixPotion(assignedAlchemicals[0],assignedAlchemicals[1])
+
+        return (assignedResult == factualResult)
+    
+
+
+
 # Prompt the user for input on the type of information
 def promptForFact(facts):
-    getType = input("Enter type of information: Mix Potion (1), Sell Potion (2), Debunk (3), or Periscope (4).")
+    getType = input("Enter type of information: Mix Potion (1), Sell Potion (2), or Debunk (3).")
     if getType == "Mix Potion" or getType == "1" :
         getMixPotionInput(facts)
     if getType == "Sell Potion" or getType == "2" :
@@ -192,5 +216,7 @@ def main():
         printProbabilityMapping(ingredients,alchemicals,assignmentProbabilities)
 
 
-main()
+# main()
+
+
 
