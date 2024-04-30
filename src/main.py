@@ -15,10 +15,10 @@ from buildAllAssignmentSets import buildAllAssignmentSets
 
 def main():
     Facts = []
-    # take in the list of ALL_ALCHEMICALS. return a list of dictionaries pairing each assignment set with a multiplier of 1.
+    # return all possible assignment sets, each with a multiplier of 1.
     possibleAssignmentSets = buildAllAssignmentSets(ALL_ALCHEMICALS,ALL_INGREDIENTS)
     # initiate loop that will end once the entire board is known.
-    while boardNotComplete:
+    while isBoardNotComplete:
         # prompt user for new fact. add that fact to Facts list. 
         getFactFromUser(Facts,ALL_ALCHEMICALS,ALL_INGREDIENTS)
         # check each alchemical permutation in the list of possiblePermutations against each fact. filter out impossible permutations.
@@ -28,7 +28,7 @@ def main():
         # display the probability of each ingredient-alchemical assignment as grid to user.
         displayProbabilities(assignmentProbabilities)
         # check if the all ingredient-achemical assignments are known.
-        boardNotComplete = checkForCompletedBoard(assignmentProbailities)
+        isBoardNotComplete = checkForCompletedBoard(assignmentProbailities)
 
 
 
