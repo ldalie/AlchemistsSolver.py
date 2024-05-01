@@ -1,4 +1,4 @@
-from src.buildAllAssignmentSets import buildAllAssignmentSets
+from src import buildAllAssignmentSets
 
 print(len(buildAllAssignmentSets()))
 
